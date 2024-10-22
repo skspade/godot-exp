@@ -19,6 +19,10 @@ config/icon="res://icon.svg"
 
 project/assembly_name="Factory Survivors"
 
+[global_group]
+
+player="The player "
+
 [input]
 
 move_right={

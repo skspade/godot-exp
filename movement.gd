@@ -11,16 +11,19 @@ const SPEED = 150.0
 # Variable to keep track of the last direction the character was facing
 var last_direction = Vector2.DOWN  # Default facing down
 
-# This function is called every physics frame (typically 60 times per second)
-func _physics_process(_delta: float) -> void:
-	# Initialize a Vector2 to store the input direction
-	var input_direction = Vector2.ZERO
-	
+
+func _physics_process(_delta):
+	if player == null:
+		return
+
+	# Calculate direction to player
+	var direction = (player.global_position - global_position).normalized()
+
 	# Get the horizontal input (-1 for left, 1 for right, 0 for no input)
 	input_direction.x = Input.get_axis("move_left", "move_right")
 	# Get the vertical input (-1 for up, 1 for down, 0 for no input)
 	input_direction.y = Input.get_axis("move_up", "move_down")
-	
+
 	# Check if there's any input
 	if input_direction != Vector2.ZERO:
 		# Normalize the input direction to ensure diagonal movement isn't faster
