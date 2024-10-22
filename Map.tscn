@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://b3jlrjs365toc"]
+
+[ext_resource type="PackedScene" uid="uid://cssj4nxfl447i" path="res://Actors/Enemy.tscn" id="2_mdaaj"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource("2_mdaaj")]
