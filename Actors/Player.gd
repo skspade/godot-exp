@@ -1,4 +1,4 @@
-#movement.gd
+#Player.gd
 # This script extends CharacterBody2D, which is a built-in Godot class for characters that can move and collide with the environment
 extends CharacterBody2D
 

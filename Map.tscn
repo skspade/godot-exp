@@ -8,3 +8,5 @@
 [node name="Player" parent="." instance=ExtResource("1_cx08v")]
 
 [node name="Enemy" parent="." instance=ExtResource("2_mdaaj")]
+
+[node name="Enemy2" parent="." instance=ExtResource("2_mdaaj")]

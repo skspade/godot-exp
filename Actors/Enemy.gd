@@ -1,8 +1,7 @@
-# Enemy.gd
 extends CharacterBody2D
 
 # Movement and behavior settings
-@export var speed = 150.0
+@export var speed = 130.0
 @export var detect_range = 500.0
 @export var movement_pattern: String = "chase" # chase, circle, zigzag
 @export var attack_damage = 10.0
@@ -11,9 +10,7 @@ extends CharacterBody2D
 
 # Node references
 @onready var animated_sprite = $AnimatedSprite2D
-
 @onready var animation_player = $AnimationPlayer
-@onready var sprite = $Sprite2D
 @onready var attack_timer = $AttackTimer
 @onready var audio_player = $AudioStreamPlayer2D
 @onready var health_bar = $HealthBar
@@ -58,23 +55,20 @@ func _ready():
 	player = get_tree().get_first_node_in_group("player")
 	
 	# Start idle animation
-	play_animation("idle")
+	play_idle_animation()
 
 func _physics_process(delta):
 	if player == null:
 		return
-	
+		
 	var direction = get_movement_direction(delta)
 	velocity = direction * speed
 	move_and_slide()
 	
-	# Update facing direction
 	update_facing_direction(direction)
-	
-	# Try to attack if in range
 	check_attack()
 
-func get_movement_direction(_delta) -> Vector2:
+func get_movement_direction(delta) -> Vector2:
 	var base_direction = (player.global_position - global_position).normalized()
 	
 	match movement_pattern:
@@ -101,13 +95,13 @@ func get_movement_direction(_delta) -> Vector2:
 func update_facing_direction(direction: Vector2):
 	# Update sprite facing direction
 	if direction.x != 0:
-		sprite.flip_h = direction.x < 0
+		animated_sprite.flip_h = direction.x < 0
 	
 	# Play movement animation
 	if velocity.length() > 0:
-		play_animation("walk")
+		play_walk_animation(direction)
 	else:
-		play_animation("idle")
+		play_idle_animation()
 
 func check_attack():
 	if !can_attack:
@@ -121,8 +115,8 @@ func attack():
 	can_attack = false
 	attack_timer.start()
 	
-	# Play attack animation and sound
-	play_animation("attack")
+	# Play attack animation
+	animated_sprite.play("attack")
 	play_sound(attack_sound)
 	
 	# Emit signal for damage
@@ -137,20 +131,20 @@ func take_damage(amount: float):
 	health_bar.value = current_health
 	
 	# Play hit animation and sound
-	play_animation("hurt")
+	animated_sprite.play("hurt")
 	play_sound(hit_sound)
 	
 	if current_health <= 0:
 		die()
 	else:
 		# Flash red when hit
-		sprite.modulate = Color(1, 0, 0, 1)
+		animated_sprite.modulate = Color(1, 0, 0, 1)
 		await get_tree().create_timer(0.1).timeout
-		sprite.modulate = Color(1, 1, 1, 1)
+		animated_sprite.modulate = Color(1, 1, 1, 1)
 
 func die():
 	# Play death animation and sound
-	play_animation("death")
+	animated_sprite.play("death")
 	play_sound(death_sound)
 	
 	# Disable collision and physics
@@ -158,14 +152,10 @@ func die():
 	$CollisionShape2D.set_deferred("disabled", true)
 	
 	# Wait for animation to finish
-	await animation_player.animation_finished
+	await animated_sprite.animation_finished
 	
 	# Optional: Spawn particles, drop items, etc.
 	queue_free()
-
-func play_animation(anim_name: String):
-	if animation_player.has_animation(anim_name) and animation_player.current_animation != anim_name:
-		animation_player.play(anim_name)
 
 func play_sound(sound: AudioStream):
 	if sound != null:
@@ -174,8 +164,7 @@ func play_sound(sound: AudioStream):
 
 func _on_attack_timer_timeout():
 	can_attack = true
-	
-	# Function to play the appropriate walking animation based on the movement direction
+
 func play_walk_animation(direction: Vector2) -> void:
 	# Check if the horizontal movement is greater than the vertical movement
 	if abs(direction.x) > abs(direction.y):
@@ -185,15 +174,12 @@ func play_walk_animation(direction: Vector2) -> void:
 		# Play up or down animation based on the vertical direction
 		animated_sprite.play("move_down" if direction.y > 0 else "move_up")
 
-# Function to play the idle animation based on the last direction faced
 func play_idle_animation() -> void:
 	# Check if the last movement was more horizontal than vertical
 	if abs(last_direction.x) > abs(last_direction.y):
-		# Play the default idle animation (assuming it's the same for left and right)
-		animated_sprite.play("default")
+		animated_sprite.play("idle_side")
 	else:
-		# Play the default idle animation (assuming it's the same for up and down)
-		animated_sprite.play("default")
+		animated_sprite.play("idle_down" if last_direction.y > 0 else "idle_up")
 
 # Signals
 signal enemy_attacked(attack_data)
