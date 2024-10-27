@@ -1,46 +1,136 @@
-[gd_scene load_steps=4 format=3 uid="uid://cssj4nxfl447i"]
+[gd_scene load_steps=17 format=3 uid="uid://cnoptunqbhuvi"]
 
-[ext_resource type="Script" path="res://movement.gd" id="1_vnb38"]
+[ext_resource type="Texture2D" uid="uid://betuqxw0x7vpj" path="res://gfx/NPC_test.png" id="1_ah5sq"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6otgy"]
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_216bu"]
 radius = 9.0
 height = 18.0
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_1tu1k"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_uqxw2"]
+atlas = ExtResource("1_ah5sq")
+region = Rect2(0, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7qtry"]
+atlas = ExtResource("1_ah5sq")
+region = Rect2(0, 96, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uoxhf"]
+atlas = ExtResource("1_ah5sq")
+region = Rect2(16, 96, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_svnu2"]
+atlas = ExtResource("1_ah5sq")
+region = Rect2(32, 96, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_guiia"]
+atlas = ExtResource("1_ah5sq")
+region = Rect2(48, 96, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jbrqr"]
+atlas = ExtResource("1_ah5sq")
+region = Rect2(0, 32, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_itx82"]
+atlas = ExtResource("1_ah5sq")
+region = Rect2(16, 32, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cyyac"]
+atlas = ExtResource("1_ah5sq")
+region = Rect2(32, 32, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_33cni"]
+atlas = ExtResource("1_ah5sq")
+region = Rect2(48, 32, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0jgth"]
+atlas = ExtResource("1_ah5sq")
+region = Rect2(0, 64, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_75x5c"]
+atlas = ExtResource("1_ah5sq")
+region = Rect2(16, 64, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f7rmk"]
+atlas = ExtResource("1_ah5sq")
+region = Rect2(32, 64, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_og2iw"]
+atlas = ExtResource("1_ah5sq")
+region = Rect2(48, 64, 16, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_nhv7k"]
 animations = [{
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uqxw2")
+}],
 "loop": true,
 "name": &"default",
 "speed": 5.0
 }, {
-"frames": [],
-"loop": true,
-"name": &"move_down",
-"speed": 5.0
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7qtry")
 }, {
-"frames": [],
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uoxhf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_svnu2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_guiia")
+}],
 "loop": true,
 "name": &"move_left",
 "speed": 5.0
 }, {
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jbrqr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_itx82")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cyyac")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_33cni")
+}],
 "loop": true,
 "name": &"move_right",
 "speed": 5.0
 }, {
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0jgth")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_75x5c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f7rmk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_og2iw")
+}],
 "loop": true,
 "name": &"move_up",
 "speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"new_animation",
+"speed": 5.0
 }]
 
-[node name="CharacterBody2D" type="CharacterBody2D"]
-script = ExtResource("1_vnb38")
+[node name="Enemy" type="CharacterBody2D"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 1)
-shape = SubResource("CapsuleShape2D_6otgy")
+shape = SubResource("CapsuleShape2D_216bu")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-sprite_frames = SubResource("SpriteFrames_1tu1k")
+sprite_frames = SubResource("SpriteFrames_nhv7k")
 animation = &"move_up"
